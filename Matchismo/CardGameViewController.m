@@ -15,6 +15,7 @@
 @property (strong, nonatomic) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UIButton *startGame;
 @end
 
 @implementation CardGameViewController
@@ -25,6 +26,10 @@
     }
     return _game;
 }
+
+- (void) setGame {
+    _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck]];
+}
                  
 - (Deck *)createDeck {
     return [[PlayingCardDeck alloc] init];
@@ -34,6 +39,10 @@
     
     int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
+    [self updateUI];
+}
+- (IBAction)startGameButton:(UIButton *)sender {
+    [self setGame];
     [self updateUI];
 }
 
