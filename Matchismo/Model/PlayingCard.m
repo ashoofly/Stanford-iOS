@@ -10,17 +10,84 @@
 
 @implementation PlayingCard
 
-- (int)match:(NSArray *)otherCards {
+static const int RANK_MATCH_PTS = 4;
+static const int SUIT_MATCH_PTS = 1;
+static const int ALL_RANKS_MATCH_BONUS = 100;
+static const int ALL_SUITS_MATCH_BONUS = 50;
+static const int MISMATCH_PENALTY = 1;
+
+typedef NS_ENUM(NSInteger, Criterion) {
+    RANK,
+    SUIT
+};
+
+- (bool)isEqual:(PlayingCard *)otherCard {
+    if (self.rank == otherCard.rank && self.suit == otherCard.suit) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (int)match:(NSArray *)chosenCards {
     int score = 0;
-    if ([otherCards count] == 1) {
-        PlayingCard *otherCard = [otherCards firstObject];
-        if (otherCard.rank == self.rank) {
-            score = 4;
-        } else if ([otherCard.suit isEqualToString:self.suit]) {
-            score = 1;
+    int maxMatch = [self findMaxMatch:chosenCards
+                            criterion:RANK];
+    NSLog(@"Max rank match count: %d", maxMatch);
+
+    if (maxMatch == [chosenCards count] && [chosenCards count] > 2) {
+        score += ALL_RANKS_MATCH_BONUS + maxMatch * RANK_MATCH_PTS;
+        NSLog(@"All ranks matched! +%d", score);
+
+    } else if (maxMatch > 1) {
+        score = maxMatch * RANK_MATCH_PTS;
+        NSLog(@"A match! +%d", score);
+    } else {
+        //look up suits.
+        maxMatch = [self findMaxMatch:chosenCards
+                            criterion:SUIT];
+        NSLog(@"Max suit match count: %d", maxMatch);
+
+        if (maxMatch == [chosenCards count] && [chosenCards count] >2) {
+            score += ALL_SUITS_MATCH_BONUS + maxMatch * SUIT_MATCH_PTS;
+            NSLog(@"All suits matched! +%d", score);
+        } else if (maxMatch > 1) {
+            score = maxMatch * SUIT_MATCH_PTS;
+            NSLog(@"Match! +%d", score);
+        } else {
+            //if no rank OR suit,
+            score -= MISMATCH_PENALTY;
+            NSLog(@"No match! %d", score);
         }
     }
     return score;
+}
+
+- (int) findMaxMatch:(NSArray *)chosenCards criterion:(Criterion)theCriterion {
+    
+    NSMutableDictionary *counts = [NSMutableDictionary dictionary];
+    NSString *key = [[NSString alloc] init];
+    NSNumber *value = [[NSNumber alloc] init];
+
+    for (PlayingCard *card in chosenCards) {
+        if (theCriterion == RANK) {
+            key = [NSString stringWithFormat:@"%lu", card.rank];
+        } else if (theCriterion == SUIT) {
+            key = card.suit;
+        }
+        //NSLog(@"Looking for this key: %@", key);
+        
+        if ((value = [counts objectForKey:key])) {
+            [counts setObject:[NSNumber numberWithInt:([value intValue]+1)] forKey:key];
+        } else {
+            [counts setObject:[NSNumber numberWithInt:1] forKey:key];
+        }
+    }
+    NSArray *keys = [counts keysSortedByValueUsingComparator:^(id obj1, id obj2) {
+        return [obj2 compare:obj1];
+    }];
+                     
+    return [counts[[keys firstObject]] intValue];
 }
 
 

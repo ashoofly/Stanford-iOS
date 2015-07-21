@@ -7,10 +7,14 @@
 //
 
 #import "CardMatchingGame.h"
+#import "PlayingCard.h"
 
 @interface CardMatchingGame()
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray *cards;
+@property (nonatomic, strong) NSMutableArray *chosenCards;
+@property (nonatomic) NSInteger multiple;
+@property (nonatomic) NSInteger roundScore;
 @end
 
 
@@ -23,10 +27,21 @@
     return _cards;
 }
 
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck {
+- (NSMutableArray *) chosenCards {
+    if (!_chosenCards) {
+        _chosenCards = [[NSMutableArray alloc] init];
+    }
+    return _chosenCards;
+}
+
+
+
+
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck gameType:(NSInteger)multiple {
     
     self = [super init];
     if (self) {
+        self.multiple = multiple;
         for (int i=0; i<count; i++) {
             Card *card = [deck drawRandomCard];
             if (card) {
@@ -45,42 +60,57 @@
     return (index<[self.cards count]) ? self.cards[index] : nil;
 }
 
-static const int MISMATCH_PENALTY = 2;
-static const int MATCH_BONUS = 4;
 static const int COST_TO_CHOOSE = 1;
 
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
-    Card *card = [self cardAtIndex:index];
-    if (!card.isMatched) {
-        if (card.isChosen) {
+    
+    if ([self.chosenCards count]== self.multiple) {
+        /* reset */
+        for (PlayingCard *card in self.chosenCards) {
             card.chosen = NO;
+            NSLog(@"Unchoosing card %lu of %@", card.rank, card.suit);
+        }
+        self.chosenCards = [[NSMutableArray alloc] init];
+    }
+    
+    Card *card = [self cardAtIndex:index];
+    
+    /* only do something if card is still in play */
+    if (!card.isMatched) {
+        
+        if (card.isChosen) {
+            /* unchoose card */
+            card.chosen = NO;
+            [self.chosenCards removeObject:card];
+            
         } else {
-            for (Card *otherCard in self.cards) {
-                if (otherCard.isChosen && !otherCard.isMatched) {
-                    int matchScore = [card match:@[otherCard]];
-                    if (matchScore) {
-                        self.score += matchScore * MATCH_BONUS;
-                        NSLog(@"Matched! +%d", matchScore * MATCH_BONUS);
-                        otherCard.matched = YES;
+            card.chosen = YES;
+            self.score -= COST_TO_CHOOSE;
+            NSLog(@"-1 for choosing. Current score: %ld", (long)self.score);
+            
+            [self.chosenCards addObject:card];
+            NSLog(@"Chosen cards:");
+            for (PlayingCard *card in self.chosenCards) {
+                NSLog(@"%lu %@", (unsigned long)card.rank, card.suit);
+            }
+            
+            if ([self.chosenCards count] == self.multiple) {
+                int roundScore = [card match:self.chosenCards];
+                self.score += roundScore;
+                NSLog(@"Total score after round: %ld", (long)self.score);
+
+                if (roundScore > 0) {
+                    /* at least 1 match */
+                    for (PlayingCard *card in self.chosenCards) {
                         card.matched = YES;
-                    } else {
-                        NSLog(@"No match! -%d", MISMATCH_PENALTY);
-                        self.score -= MISMATCH_PENALTY;
-                        otherCard.chosen = NO;
+                        NSLog(@"Chosen card %lu of %@ is matched and out of play.", card.rank, card.suit);
                     }
-                    break;
+                    self.chosenCards = [[NSMutableArray alloc] init];
                 }
             }
-            NSLog(@"Toll: -%d", COST_TO_CHOOSE);
-            self.score -= COST_TO_CHOOSE;
-            card.chosen = YES;
         }
     }
 }
-
-
-
-
 
 @end

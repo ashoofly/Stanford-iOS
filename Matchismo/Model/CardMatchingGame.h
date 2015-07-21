@@ -7,17 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-# import "Deck.h"
+#import "Deck.h"
+
+typedef NS_ENUM(NSInteger, MatchNumber) {
+    TWO_CARD,
+    THREE_CARD
+};
 
 
 @interface CardMatchingGame : NSObject
 
 - (instancetype)initWithCardCount:(NSUInteger)count
-                        usingDeck:(Deck *)deck;
+                        usingDeck:(Deck *)deck
+                         gameType:(NSInteger)multiple;
 
 - (void) chooseCardAtIndex:(NSUInteger) index;
 - (Card *) cardAtIndex:(NSUInteger)index;
 
 @property (nonatomic, readonly) NSInteger score;
-
 @end
