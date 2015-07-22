@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Deck.h"
-#import "CardGameViewController.h"
 
 typedef NS_ENUM(NSInteger, MatchNumber) {
     TWO_CARD,

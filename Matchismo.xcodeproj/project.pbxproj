@@ -19,6 +19,7 @@
 		A27E3B741B56BE9100C2F669 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A27E3B731B56BE9100C2F669 /* Images.xcassets */; };
 		A27E3B771B56BE9100C2F669 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = A27E3B751B56BE9100C2F669 /* LaunchScreen.xib */; };
 		A27E3B831B56BE9100C2F669 /* MatchismoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A27E3B821B56BE9100C2F669 /* MatchismoTests.m */; };
+		A2C1539F1B60394C00649A8E /* PlayingCardGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A2C1539E1B60394C00649A8E /* PlayingCardGameViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,8 @@
 		A27E3B7C1B56BE9100C2F669 /* MatchismoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MatchismoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27E3B811B56BE9100C2F669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A27E3B821B56BE9100C2F669 /* MatchismoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchismoTests.m; sourceTree = "<group>"; };
+		A2C1539D1B60394C00649A8E /* PlayingCardGameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayingCardGameViewController.h; sourceTree = "<group>"; };
+		A2C1539E1B60394C00649A8E /* PlayingCardGameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayingCardGameViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +118,8 @@
 			children = (
 				A27E3B6D1B56BE9100C2F669 /* CardGameViewController.h */,
 				A27E3B6E1B56BE9100C2F669 /* CardGameViewController.m */,
+				A2C1539D1B60394C00649A8E /* PlayingCardGameViewController.h */,
+				A2C1539E1B60394C00649A8E /* PlayingCardGameViewController.m */,
 				A27E3B701B56BE9100C2F669 /* Main.storyboard */,
 				A27E3B731B56BE9100C2F669 /* Images.xcassets */,
 				A27E3B751B56BE9100C2F669 /* LaunchScreen.xib */,
@@ -260,6 +265,7 @@
 				A24D7DAE1B58122100050727 /* PlayingCardDeck.m in Sources */,
 				A27E3B691B56BE9100C2F669 /* main.m in Sources */,
 				A24D7DA01B5808DC00050727 /* Card.m in Sources */,
+				A2C1539F1B60394C00649A8E /* PlayingCardGameViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

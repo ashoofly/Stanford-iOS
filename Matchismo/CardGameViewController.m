@@ -6,29 +6,15 @@
 //  Copyright (c) 2015 Optaros. All rights reserved.
 //
 
-/* TODO:
- 1. Label needs to start off with blank.
- 2. Label needs to clear itself. 
- 3. Score detail points are erroneous. ALL MATCH when NO MATCH, etc.
- 
- 
- */
-
-
 #import "CardGameViewController.h"
 #import "Deck.h"
-#import "PlayingCardDeck.h"
 #import "CardMatchingGame.h"
-#import "PlayingCard.h"
 
 @interface CardGameViewController ()
-@property (strong, nonatomic) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (weak, nonatomic) IBOutlet UIButton *startGame;
 @property (nonatomic) NSInteger multiple;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
-@property (weak, nonatomic) IBOutlet UILabel *suitRankLabel;
 @end
 
 @implementation CardGameViewController
@@ -45,8 +31,8 @@
     _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count] usingDeck:[self createDeck] gameType:self.multiple];
 }
                  
-- (Deck *)createDeck {
-    return [[PlayingCardDeck alloc] init];
+- (Deck *)createDeck {  //abstract
+    return nil;
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender {
@@ -82,7 +68,7 @@
     
     for (UIButton *cardButton in self.cardButtons) {
         NSInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
-        PlayingCard *card = (PlayingCard *)[self.game cardAtIndex:cardButtonIndex];
+        Card *card = [self.game cardAtIndex:cardButtonIndex];
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
@@ -91,36 +77,7 @@
 }
 
 - (void)updateScoreDetails {
-    [self.suitRankLabel setText:@""];
-    NSMutableString *cards = [NSMutableString string];
-    for (PlayingCard *card in self.game.chosenCards) {
-        [cards appendString:[NSString stringWithFormat:@"%@ %@  ", [PlayingCard rankStrings][card.rank], card.suit]];
-    }
-    if (self.game.roundResult != TBD) {
-        switch (self.game.roundResult) {
-            case ALL_RANKS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"All ranks matched! +%ld", self.game.roundScore]];
-                break;
-            case SOME_RANKS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"Some ranks matched! +%ld", self.game.roundScore]];
-                break;
-            case SOME_SUITS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"Some suits matched! +%ld", self.game.roundScore]];
-                break;
-            case ALL_SUITS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"All suits matched! +%ld", self.game.roundScore]];
-                break;
-            case NO_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"No cards matched! %ld", self.game.roundScore]];
-                break;
-            default:
-                break;
-        }
-        
-    }
-    [self.suitRankLabel setText:cards];
-    self.game.roundResult = TBD;
-
+    //abstract - instantiated in subclass
 }
 
 - (NSString *)titleForCard:(Card *)card {
