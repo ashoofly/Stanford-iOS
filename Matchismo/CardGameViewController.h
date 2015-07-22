@@ -10,6 +10,8 @@
 
 @interface CardGameViewController : UIViewController
 
+- (void)updateScoreDetails;
+
 
 @end
 

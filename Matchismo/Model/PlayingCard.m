@@ -29,38 +29,56 @@ typedef NS_ENUM(NSInteger, Criterion) {
     }
 }
 
-- (int)match:(NSArray *)chosenCards {
-    int score = 0;
-    int maxMatch = [self findMaxMatch:chosenCards
+- (void)match:(CardMatchingGame *)game {
+    game.roundScore = 0;
+    game.roundResult = TBD;
+    int maxMatch = [self findMaxMatch:game.chosenCards
                             criterion:RANK];
     NSLog(@"Max rank match count: %d", maxMatch);
+    
+    if (maxMatch == [game.chosenCards count] && [game.chosenCards count] > 2) {
+        game.roundScore += ALL_RANKS_MATCH_BONUS + maxMatch * RANK_MATCH_PTS;
+        game.roundResult = ALL_RANKS_MATCH;
+        NSLog(@"All ranks matched! +%ld", (long)game.roundScore);
 
-    if (maxMatch == [chosenCards count] && [chosenCards count] > 2) {
-        score += ALL_RANKS_MATCH_BONUS + maxMatch * RANK_MATCH_PTS;
-        NSLog(@"All ranks matched! +%d", score);
-
-    } else if (maxMatch > 1) {
-        score = maxMatch * RANK_MATCH_PTS;
-        NSLog(@"A match! +%d", score);
+    } else if (maxMatch == [game.chosenCards count] && [game.chosenCards count] == 2) {
+        /* 2-card game is easier. Score differently. */
+        game.roundScore = maxMatch * RANK_MATCH_PTS;
+        game.roundResult = ALL_RANKS_MATCH;
+        NSLog(@"Rank matched! +%ld", (long)game.roundScore);
+    }
+      else if (maxMatch > 1) {
+        game.roundScore = maxMatch * RANK_MATCH_PTS;
+        game.roundResult = SOME_RANKS_MATCH;
+        NSLog(@"A match! +%ld", (long)game.roundScore);
     } else {
         //look up suits.
-        maxMatch = [self findMaxMatch:chosenCards
+        maxMatch = [self findMaxMatch:game.chosenCards
                             criterion:SUIT];
         NSLog(@"Max suit match count: %d", maxMatch);
 
-        if (maxMatch == [chosenCards count] && [chosenCards count] >2) {
-            score += ALL_SUITS_MATCH_BONUS + maxMatch * SUIT_MATCH_PTS;
-            NSLog(@"All suits matched! +%d", score);
+        if (maxMatch == [game.chosenCards count] && [game.chosenCards count] >2) {
+            game.roundScore += ALL_SUITS_MATCH_BONUS + maxMatch * SUIT_MATCH_PTS;
+            game.roundResult = ALL_SUITS_MATCH;
+            NSLog(@"All suits matched! +%ld", (long)game.roundScore);
+            
+        } else if (maxMatch == [game.chosenCards count] && [game.chosenCards count] == 2) {
+                /* 2-card game is easier. Score differently. */
+                game.roundScore = maxMatch * SUIT_MATCH_PTS;
+                game.roundResult = ALL_SUITS_MATCH;
+                NSLog(@"Suits matched! +%ld", (long)game.roundScore);
+
         } else if (maxMatch > 1) {
-            score = maxMatch * SUIT_MATCH_PTS;
-            NSLog(@"Match! +%d", score);
+            game.roundScore = maxMatch * SUIT_MATCH_PTS;
+            game.roundResult = SOME_SUITS_MATCH;
+            NSLog(@"Match! +%ld", (long)game.roundScore);
         } else {
             //if no rank OR suit,
-            score -= MISMATCH_PENALTY;
-            NSLog(@"No match! %d", score);
+            game.roundScore -= MISMATCH_PENALTY;
+            game.roundResult = NO_MATCH;
+            NSLog(@"No match! %ld", (long)game.roundScore);
         }
     }
-    return score;
 }
 
 - (int) findMaxMatch:(NSArray *)chosenCards criterion:(Criterion)theCriterion {

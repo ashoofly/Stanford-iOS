@@ -8,13 +8,10 @@
 
 #import "CardMatchingGame.h"
 #import "PlayingCard.h"
+#import "CardGameViewController.h"
 
 @interface CardMatchingGame()
-@property (nonatomic, readwrite) NSInteger score;
-@property (nonatomic, strong) NSMutableArray *cards;
-@property (nonatomic, strong) NSMutableArray *chosenCards;
-@property (nonatomic) NSInteger multiple;
-@property (nonatomic) NSInteger roundScore;
+
 @end
 
 
@@ -42,6 +39,7 @@
     self = [super init];
     if (self) {
         self.multiple = multiple;
+        self.roundResult = TBD;
         for (int i=0; i<count; i++) {
             Card *card = [deck drawRandomCard];
             if (card) {
@@ -56,7 +54,7 @@
     return self;
 }
 
-- (Card *)cardAtIndex:(NSUInteger)index {
+- (PlayingCard *)cardAtIndex:(NSUInteger)index {
     return (index<[self.cards count]) ? self.cards[index] : nil;
 }
 
@@ -68,13 +66,15 @@ static const int COST_TO_CHOOSE = 1;
     if ([self.chosenCards count]== self.multiple) {
         /* reset */
         for (PlayingCard *card in self.chosenCards) {
-            card.chosen = NO;
-            NSLog(@"Unchoosing card %lu of %@", card.rank, card.suit);
+            if (!card.isMatched) {
+                card.chosen = NO;
+                NSLog(@"Unchoosing card %lu of %@", card.rank, card.suit);
+            }
         }
         self.chosenCards = [[NSMutableArray alloc] init];
     }
     
-    Card *card = [self cardAtIndex:index];
+    PlayingCard *card = [self cardAtIndex:index];
     
     /* only do something if card is still in play */
     if (!card.isMatched) {
@@ -96,17 +96,18 @@ static const int COST_TO_CHOOSE = 1;
             }
             
             if ([self.chosenCards count] == self.multiple) {
-                int roundScore = [card match:self.chosenCards];
-                self.score += roundScore;
+                //- (void)match:(NSArray *)chosenCards ofGame:(CardMatchingGame *)game;
+
+                [card match:self];
+                self.score += self.roundScore;
                 NSLog(@"Total score after round: %ld", (long)self.score);
 
-                if (roundScore > 0) {
+                if (self.roundScore > 0) {
                     /* at least 1 match */
                     for (PlayingCard *card in self.chosenCards) {
                         card.matched = YES;
                         NSLog(@"Chosen card %lu of %@ is matched and out of play.", card.rank, card.suit);
                     }
-                    self.chosenCards = [[NSMutableArray alloc] init];
                 }
             }
         }
