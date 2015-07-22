@@ -54,7 +54,7 @@
     return self;
 }
 
-- (PlayingCard *)cardAtIndex:(NSUInteger)index {
+- (Card *)cardAtIndex:(NSUInteger)index {
     return (index<[self.cards count]) ? self.cards[index] : nil;
 }
 
@@ -65,16 +65,15 @@ static const int COST_TO_CHOOSE = 1;
     
     if ([self.chosenCards count]== self.multiple) {
         /* reset */
-        for (PlayingCard *card in self.chosenCards) {
+        for (Card *card in self.chosenCards) {
             if (!card.isMatched) {
                 card.chosen = NO;
-                NSLog(@"Unchoosing card %lu of %@", card.rank, card.suit);
             }
         }
         self.chosenCards = [[NSMutableArray alloc] init];
     }
     
-    PlayingCard *card = [self cardAtIndex:index];
+    Card *card = [self cardAtIndex:index];
     
     /* only do something if card is still in play */
     if (!card.isMatched) {
@@ -87,26 +86,22 @@ static const int COST_TO_CHOOSE = 1;
         } else {
             card.chosen = YES;
             self.score -= COST_TO_CHOOSE;
-            NSLog(@"-1 for choosing. Current score: %ld", (long)self.score);
             
             [self.chosenCards addObject:card];
-            NSLog(@"Chosen cards:");
-            for (PlayingCard *card in self.chosenCards) {
-                NSLog(@"%lu %@", (unsigned long)card.rank, card.suit);
-            }
-            
-            if ([self.chosenCards count] == self.multiple) {
-                //- (void)match:(NSArray *)chosenCards ofGame:(CardMatchingGame *)game;
 
-                [card match:self];
+            if ([self.chosenCards count] == self.multiple) {
+
+                if ([card isMemberOfClass:[PlayingCard class]]) {
+                    [(PlayingCard *)card match:self];
+                } else {
+                    [card match:self.chosenCards];
+                }
                 self.score += self.roundScore;
-                NSLog(@"Total score after round: %ld", (long)self.score);
 
                 if (self.roundScore > 0) {
                     /* at least 1 match */
                     for (PlayingCard *card in self.chosenCards) {
                         card.matched = YES;
-                        NSLog(@"Chosen card %lu of %@ is matched and out of play.", card.rank, card.suit);
                     }
                 }
             }

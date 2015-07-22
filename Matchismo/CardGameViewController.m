@@ -51,7 +51,7 @@
 
 - (IBAction)touchCardButton:(UIButton *)sender {
     self.segmentedControl.userInteractionEnabled = NO;
-    int chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+    NSInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:chosenButtonIndex];
     [self updateUI];
     [self updateScoreDetails];
@@ -81,8 +81,8 @@
 - (void)updateUI {
     
     for (UIButton *cardButton in self.cardButtons) {
-        int cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
-        PlayingCard *card = [self.game cardAtIndex:cardButtonIndex];
+        NSInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
+        PlayingCard *card = (PlayingCard *)[self.game cardAtIndex:cardButtonIndex];
         [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
         [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
         cardButton.enabled = !card.isMatched;
