@@ -9,27 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "Deck.h"
 
-typedef NS_ENUM(NSInteger, MatchNumber) {
-    TWO_CARD,
-    THREE_CARD
-};
 
-typedef NS_ENUM(NSInteger, RoundResult) {
-    ALL_RANKS_MATCH,
-    ALL_SUITS_MATCH,
-    SOME_RANKS_MATCH,
-    SOME_SUITS_MATCH,
-    NO_MATCH,
-    TBD
-};
 
 @interface CardMatchingGame : NSObject
 
-
+/* abstract */
 
 - (instancetype)initWithCardCount:(NSUInteger)count
-                        usingDeck:(Deck *)deck
-                         gameType:(NSInteger)multiple;
+                        usingDeck:(Deck *)deck;
 
 - (void) chooseCardAtIndex:(NSUInteger) index;
 - (Card *) cardAtIndex:(NSUInteger)index;
@@ -39,5 +26,7 @@ typedef NS_ENUM(NSInteger, RoundResult) {
 @property (nonatomic, strong) NSMutableArray *chosenCards;
 @property (nonatomic) NSInteger multiple;
 @property (nonatomic) NSInteger roundScore;
-@property (nonatomic) RoundResult roundResult;
+@property (nonatomic) NSInteger roundResult;
+
+
 @end

@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, Criterion) {
     }
 }
 
-- (void)match:(CardMatchingGame *)game {
+- (void)match:(PlayingCardMatchingGame *)game {
     game.roundScore = 0;
     game.roundResult = TBD;
     int maxMatch = [self findMaxMatch:game.chosenCards
@@ -93,7 +93,6 @@ typedef NS_ENUM(NSInteger, Criterion) {
         } else if (theCriterion == SUIT) {
             key = card.suit;
         }
-        //NSLog(@"Looking for this key: %@", key);
         
         if ((value = [counts objectForKey:key])) {
             [counts setObject:[NSNumber numberWithInt:([value intValue]+1)] forKey:key];

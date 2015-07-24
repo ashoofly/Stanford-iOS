@@ -14,10 +14,15 @@
 @interface CardGameViewController : UIViewController
 
 @property (strong, nonatomic) CardMatchingGame *game;
+@property (nonatomic) NSInteger cardCount;
 
-/* abstract methods */
+- (void)newGame;
+
+/* abstract */
 - (Deck *)createDeck;
 - (void)updateScoreDetails;
+- (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card;
+
 
 
 @end

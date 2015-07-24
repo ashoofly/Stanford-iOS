@@ -16,6 +16,12 @@
 
 @implementation PlayingCardGameViewController
 
+
+- (void) newGame {
+    self.game = [[PlayingCardMatchingGame alloc] initWithCardCount:self.cardCount usingDeck:[self createDeck]];
+}
+
+
 - (Deck *)createDeck {
      return [[PlayingCardDeck alloc] init];
 }

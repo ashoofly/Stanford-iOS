@@ -31,19 +31,16 @@
     return _chosenCards;
 }
 
-
-
-
-- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck gameType:(NSInteger)multiple {
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck {
     
     self = [super init];
     if (self) {
-        self.multiple = multiple;
-        self.roundResult = TBD;
         for (int i=0; i<count; i++) {
             Card *card = [deck drawRandomCard];
+            
             if (card) {
                 [self.cards addObject:card];
+                
             } else {
                 self = nil;
                 break;
@@ -81,10 +78,12 @@ static const int COST_TO_CHOOSE = 1;
         if (card.isChosen) {
             /* unchoose card */
             card.chosen = NO;
+
             [self.chosenCards removeObject:card];
             
         } else {
             card.chosen = YES;
+
             self.score -= COST_TO_CHOOSE;
             
             [self.chosenCards addObject:card];
