@@ -12,5 +12,14 @@
 
 @implementation SetCardMatchingGame
 
+- (instancetype)initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck {
+    
+    self = [super initWithCardCount:count usingDeck:deck];
+    if (self) {
+        self.roundResult = UNDEFINED;
+    }
+    
+    return self;
+}
 
 @end

@@ -12,6 +12,12 @@
 
 #import "SetCardMatchingGame.h"
 
+@interface SetCardGameViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *roundScoreLabel;
+@end
+
+
+
 @implementation SetCardGameViewController
 
 - (void) newGame {
@@ -20,11 +26,9 @@
 
 }
 
-
 - (Deck *)createDeck {
     return [[SetDeck alloc] init];
 }
-
 
 - (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card {
     SetCard *setCard = (SetCard *)card;
@@ -32,7 +36,22 @@
     [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
 }
 
-
+- (void)updateScoreDetails {
+    [self.roundScoreLabel setText:@""];
+    NSMutableAttributedString *attString = [[NSMutableAttributedString alloc] initWithString:@""];
+    for (SetCard *card in self.game.chosenCards) {
+        [attString appendAttributedString:[self titleForCard:card]];
+    }
+    if (self.game.roundResult == SET) {
+        [attString appendAttributedString:[[NSMutableAttributedString alloc]initWithString:@"    Set!"]];
+    } else if (self.game.roundResult == NOT_SET) {
+        [attString appendAttributedString:
+            [[NSMutableAttributedString alloc]
+             initWithString:@"    Not a set!"]];
+    }
+    
+    [self.roundScoreLabel setAttributedText:attString];
+}
 
 - (NSAttributedString *)titleForCard:(Card *)card {
     SetCard *setCard = (SetCard *)card;
@@ -91,7 +110,6 @@
 }
     
 
-
 + (NSNumber *) getStrokeWidthAttribute:(SetCard *)card {
     if ([card.fill isEqualToString:@"OPEN"]) {
         return @-10;
@@ -100,6 +118,7 @@
         return @0;
     }
 }
+
 
 
 

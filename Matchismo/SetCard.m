@@ -29,6 +29,7 @@
 
 - (void)match:(SetCardMatchingGame *)game {
     game.roundScore = 0;
+    game.roundResult = UNDEFINED;
     
     BOOL isFillSet = [self isSet:game.chosenCards property:FILL];
     BOOL isColorSet = [self isSet:game.chosenCards property:COLOR];
@@ -38,9 +39,11 @@
     if (isFillSet && isColorSet && isNumberSet && isShapeSet) {
         //it is a match
         game.roundScore = 10;
+        game.roundResult = SET;
     }
     else {
         game.roundScore = -5;
+        game.roundResult = NOT_SET;
         //unchoose them.
         //card.matched = NO;
         for (Card *card in game.chosenCards) {

@@ -17,5 +17,11 @@ typedef NS_ENUM(NSInteger, CardProperty) {
     NUMBER
 };
 
+typedef NS_ENUM(NSInteger, SetRoundResult) {
+    SET,
+    NOT_SET,
+    UNDEFINED
+};
+
 
 @end
