@@ -30,74 +30,50 @@
 - (void)match:(SetCardMatchingGame *)game {
     game.roundScore = 0;
     
-    for (SetCard *card in game.chosenCards) {
-        //BOOL isFillSet = [self isSet:game.chosenCards];
-        
-        
-        
-        
-        
-        //take off copy & paste and generalize to isSet...
-        
-        if ([self fillSet:game.chosenCards] && [self shapeSet:game.chosenCards] && [self numSet:game.chosenCards] && [self colorSet:game.chosenCards]) {
-            //it is a match
+    BOOL isFillSet = [self isSet:game.chosenCards property:FILL];
+    BOOL isColorSet = [self isSet:game.chosenCards property:COLOR];
+    BOOL isNumberSet = [self isSet:game.chosenCards property:NUMBER];
+    BOOL isShapeSet = [self isSet:game.chosenCards property:SHAPE];
+    
+    if (isFillSet && isColorSet && isNumberSet && isShapeSet) {
+        //it is a match
+        game.roundScore = 10;
+    }
+    else {
+        game.roundScore = -5;
+        //unchoose them.
+        //card.matched = NO;
+        for (Card *card in game.chosenCards) {
+            card.chosen = NO;
+            NSLog(@"Unchose %@", card);
         }
-        else {
-            //unchoose them.
-        }
     }
     
     
 }
+- (NSObject *) getProperty:(CardProperty) property {
+    switch (property) {
+        case FILL:
+            return self.fill;
+        case SHAPE:
+            return self.shape;
+        case NUMBER:
+            return @(self.number);
+        case COLOR:
+            return self.color;
+        default:
+            return nil;
+    }
+}
 
-- (void) getProperty:(Card *)card property:(CardProperty *)property {
+
+- (BOOL) isSet:(NSArray *)cards property:(CardProperty) property {
     
-}
-
-- (BOOL) fillSet:(NSArray *)cards {
-    NSMutableArray *fill = [[NSMutableArray alloc] init];
+    NSMutableArray *group = [[NSMutableArray alloc] init];
     for (SetCard *card in cards) {
-        [fill addObject:card.fill];
+        [group addObject:[card getProperty:property]];
     }
-    int match = [[NSSet setWithArray:fill] count];
-    if (match == [SetCard maxNumber] || match == 1) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-- (BOOL) shapeSet:(NSArray *)cards {
-    NSMutableArray *shape = [[NSMutableArray alloc] init];
-    for (SetCard *card in cards) {
-        [shape addObject:card.shape];
-    }
-    int match = [[NSSet setWithArray:shape] count];
-    if (match == [SetCard maxNumber] || match == 1) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-
-- (BOOL) numSet:(NSArray *)cards {
-    NSMutableArray *num = [[NSMutableArray alloc] init];
-    for (SetCard *card in cards) {
-        [num addObject:@(card.number)];
-    }
-    int match = [[NSSet setWithArray:num] count];
-    if (match == [SetCard maxNumber] || match == 1) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
-- (BOOL) colorSet:(NSArray *)cards {
-    NSMutableArray *color = [[NSMutableArray alloc] init];
-    for (SetCard *card in cards) {
-        [color addObject:card.color];
-    }
-    int match = [[NSSet setWithArray:color] count];
+    int match = [[NSSet setWithArray:group] count];
     if (match == [SetCard maxNumber] || match == 1) {
         return YES;
     } else {

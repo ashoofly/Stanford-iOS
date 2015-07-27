@@ -43,6 +43,7 @@
     [self updateUI];
     [self updateScoreDetails];
 }
+
 - (IBAction)startGameButton:(UIButton *)sender {
     [self resetGame];
 }
@@ -65,22 +66,16 @@
     }
 }
 
+
 - (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card {
-    [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
-    [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
+    //abstract
 }
 
 - (void)updateScoreDetails {
     //abstract - instantiated in subclass
 }
 
-- (NSString *)titleForCard:(Card *)card {
-    return card.isChosen ? card.contents: @"";
-}
 
-- (UIImage *)backgroundImageForCard:(Card *)card {
-    return [UIImage imageNamed:card.isChosen ? @"cardfront": @"cardback"];
-}
 
 
 

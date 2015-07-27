@@ -20,9 +20,8 @@
 
 /* abstract */
 - (Deck *)createDeck;
-- (void)updateScoreDetails;
 - (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card;
-
+- (void)updateScoreDetails;
 
 
 @end

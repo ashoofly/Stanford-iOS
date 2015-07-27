@@ -8,6 +8,7 @@
 
 #import "CardMatchingGame.h"
 #import "PlayingCard.h"
+#import "SetCard.h"
 #import "CardGameViewController.h"
 
 @interface CardMatchingGame()
@@ -60,13 +61,13 @@ static const int COST_TO_CHOOSE = 1;
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
     
-    if ([self.chosenCards count]== self.multiple) {
+    if ([self.chosenCards count]== 3) {
         /* reset */
-        for (Card *card in self.chosenCards) {
-            if (!card.isMatched) {
-                card.chosen = NO;
-            }
-        }
+//        for (Card *card in self.chosenCards) {
+//            if (!card.isMatched) {
+//                card.chosen = NO;
+//            }
+//        }
         self.chosenCards = [[NSMutableArray alloc] init];
     }
     
@@ -88,10 +89,12 @@ static const int COST_TO_CHOOSE = 1;
             
             [self.chosenCards addObject:card];
 
-            if ([self.chosenCards count] == self.multiple) {
+            if ([self.chosenCards count] == 3) {
 
                 if ([card isMemberOfClass:[PlayingCard class]]) {
                     [(PlayingCard *)card match:self];
+                } else if ([card isMemberOfClass:[SetCard class]]) {
+                    [(SetCard *)card match:self];
                 } else {
                     [card match:self.chosenCards];
                 }

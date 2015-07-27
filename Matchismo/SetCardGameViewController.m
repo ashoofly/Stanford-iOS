@@ -27,25 +27,12 @@
 
 
 - (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card {
-    [cardButton setAttributedTitle:[self titleForCard:card] forState:UIControlStateNormal];
+    SetCard *setCard = (SetCard *)card;
+    [cardButton setAttributedTitle:[self titleForCard:setCard] forState:UIControlStateNormal];
     [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
 }
 
 
-+ (UIColor *)getColorAttribute:(SetCard *)card {
-    if ([card.color isEqualToString:@"RED"]) {
-        return [UIColor redColor];
-    }
-    else if ([card.color isEqualToString:@"GREEN"]) {
-        return [UIColor greenColor];
-    }
-    else if ([card.color isEqualToString:@"PURPLE"]) {
-        return [UIColor purpleColor];
-    }
-    else {
-        return [UIColor blackColor];
-    }
-}
 
 - (NSAttributedString *)titleForCard:(Card *)card {
     SetCard *setCard = (SetCard *)card;
@@ -63,6 +50,26 @@
             range:NSMakeRange(0, [text length])];
 
     return string;
+}
+
+- (UIImage *)backgroundImageForCard:(Card *)card {
+    return [UIImage imageNamed:card.isChosen ? @"chosen rounded" : @"cardfront"];
+}
+
+
++ (UIColor *)getColorAttribute:(SetCard *)card {
+    if ([card.color isEqualToString:@"RED"]) {
+        return [UIColor redColor];
+    }
+    else if ([card.color isEqualToString:@"GREEN"]) {
+        return [UIColor greenColor];
+    }
+    else if ([card.color isEqualToString:@"PURPLE"]) {
+        return [UIColor purpleColor];
+    }
+    else {
+        return [UIColor blackColor];
+    }
 }
 
 + (NSUnderlineStyle)getUnderlineAttribute:(SetCard *)card {
@@ -94,9 +101,6 @@
     }
 }
 
-- (UIImage *)backgroundImageForCard:(Card *)card {
-    NSLog(@"Card is chosen: %d", card.isChosen);
-    return [UIImage imageNamed:card.isChosen ? @"chosen rounded" : @"cardfront"];
-}
+
 
 @end

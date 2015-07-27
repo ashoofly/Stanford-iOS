@@ -11,6 +11,4 @@
 
 @interface SetCardGameViewController : CardGameViewController
 
-- (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card;
-
 @end

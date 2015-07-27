@@ -18,6 +18,7 @@
 
 
 - (void) newGame {
+    [super newGame];
     self.game = [[PlayingCardMatchingGame alloc] initWithCardCount:self.cardCount usingDeck:[self createDeck]];
 }
 
@@ -57,6 +58,19 @@
     [self.suitRankLabel setText:cards];
     self.game.roundResult = TBD;
     
+}
+
+- (void)drawCardFace:(UIButton *)cardButton forCard:(Card *)card {
+    [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+    [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
+}
+
+- (NSString *)titleForCard:(Card *)card {
+    return card.isChosen ? card.contents: @"";
+}
+
+- (UIImage *)backgroundImageForCard:(Card *)card {
+    return [UIImage imageNamed:card.isChosen ? @"cardfront": @"cardback"];
 }
 
 @end

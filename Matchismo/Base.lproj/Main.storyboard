@@ -509,11 +509,31 @@
                                     <action selector="touchCardButton:" destination="dJg-NH-rMV" eventType="touchUpInside" id="TFb-uA-OOH"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="95e-ed-jFw">
+                                <rect key="frame" x="287" y="619" width="72" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="21"/>
+                                <state key="normal" title="Deal">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="startGameButton:" destination="dJg-NH-rMV" eventType="touchUpInside" id="GYj-vK-JTQ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dg8-cJ-Tah">
+                                <rect key="frame" x="16" y="626" width="317" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="scoreLabel" destination="dg8-cJ-Tah" id="l9E-Id-7dc"/>
                         <outletCollection property="cardButtons" destination="zpv-0s-L9l" id="Lc6-E8-K8m"/>
                         <outletCollection property="cardButtons" destination="NeC-fU-khr" id="PxI-3O-ZHV"/>
                         <outletCollection property="cardButtons" destination="5vh-Td-G4H" id="jl1-mL-Cu3"/>
