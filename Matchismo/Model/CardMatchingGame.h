@@ -24,9 +24,8 @@
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray *cards;
 @property (nonatomic, strong) NSMutableArray *chosenCards;
-@property (nonatomic) NSInteger multiple;
 @property (nonatomic) NSInteger roundScore;
 @property (nonatomic) NSInteger roundResult;
-
+@property (nonatomic) NSInteger numMatch;
 
 @end

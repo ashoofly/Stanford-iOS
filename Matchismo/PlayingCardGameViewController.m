@@ -35,17 +35,11 @@
     }
     if (self.game.roundResult != TBD) {
         switch (self.game.roundResult) {
-            case ALL_RANKS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"All ranks matched! +%ld", self.game.roundScore]];
+            case RANKS_MATCH:
+                [cards appendString:[NSString stringWithFormat:@"Ranks matched! +%ld", self.game.roundScore]];
                 break;
-            case SOME_RANKS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"Some ranks matched! +%ld", self.game.roundScore]];
-                break;
-            case SOME_SUITS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"Some suits matched! +%ld", self.game.roundScore]];
-                break;
-            case ALL_SUITS_MATCH:
-                [cards appendString:[NSString stringWithFormat:@"All suits matched! +%ld", self.game.roundScore]];
+            case SUITS_MATCH:
+                [cards appendString:[NSString stringWithFormat:@"Suits matched! +%ld", self.game.roundScore]];
                 break;
             case NO_MATCH:
                 [cards appendString:[NSString stringWithFormat:@"No cards matched! %ld", self.game.roundScore]];
@@ -53,7 +47,6 @@
             default:
                 break;
         }
-        
     }
     [self.suitRankLabel setText:cards];
     self.game.roundResult = TBD;

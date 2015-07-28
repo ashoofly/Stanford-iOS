@@ -56,18 +56,16 @@
     return (index<[self.cards count]) ? self.cards[index] : nil;
 }
 
-static const int COST_TO_CHOOSE = 1;
-
 
 - (void)chooseCardAtIndex:(NSUInteger)index {
     
-    if ([self.chosenCards count]== 3) {
+    if ([self.chosenCards count] == self.numMatch) {
         /* reset */
-//        for (Card *card in self.chosenCards) {
-//            if (!card.isMatched) {
-//                card.chosen = NO;
-//            }
-//        }
+        for (Card *card in self.chosenCards) {
+            if (!card.isMatched) {
+                card.chosen = NO;
+            }
+        }
         self.chosenCards = [[NSMutableArray alloc] init];
     }
     
@@ -84,12 +82,10 @@ static const int COST_TO_CHOOSE = 1;
             
         } else {
             card.chosen = YES;
-
-            self.score -= COST_TO_CHOOSE;
             
             [self.chosenCards addObject:card];
 
-            if ([self.chosenCards count] == 3) {
+            if ([self.chosenCards count] == self.numMatch) {
 
                 if ([card isMemberOfClass:[PlayingCard class]]) {
                     [(PlayingCard *)card match:self];

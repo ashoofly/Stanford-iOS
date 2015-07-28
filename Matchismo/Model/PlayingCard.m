@@ -12,8 +12,6 @@
 
 static const int RANK_MATCH_PTS = 4;
 static const int SUIT_MATCH_PTS = 1;
-static const int ALL_RANKS_MATCH_BONUS = 100;
-static const int ALL_SUITS_MATCH_BONUS = 50;
 static const int MISMATCH_PENALTY = 1;
 
 typedef NS_ENUM(NSInteger, Criterion) {
@@ -36,42 +34,21 @@ typedef NS_ENUM(NSInteger, Criterion) {
                             criterion:RANK];
     NSLog(@"Max rank match count: %d", maxMatch);
     
-    if (maxMatch == [game.chosenCards count] && [game.chosenCards count] > 2) {
-        game.roundScore += ALL_RANKS_MATCH_BONUS + maxMatch * RANK_MATCH_PTS;
-        game.roundResult = ALL_RANKS_MATCH;
-        NSLog(@"All ranks matched! +%ld", (long)game.roundScore);
-
-    } else if (maxMatch == [game.chosenCards count] && [game.chosenCards count] == 2) {
-        /* 2-card game is easier. Score differently. */
+    if (maxMatch == [game.chosenCards count]) {
         game.roundScore = maxMatch * RANK_MATCH_PTS;
-        game.roundResult = ALL_RANKS_MATCH;
+        game.roundResult = RANKS_MATCH;
         NSLog(@"Rank matched! +%ld", (long)game.roundScore);
-    }
-      else if (maxMatch > 1) {
-        game.roundScore = maxMatch * RANK_MATCH_PTS;
-        game.roundResult = SOME_RANKS_MATCH;
-        NSLog(@"A match! +%ld", (long)game.roundScore);
     } else {
         //look up suits.
         maxMatch = [self findMaxMatch:game.chosenCards
                             criterion:SUIT];
         NSLog(@"Max suit match count: %d", maxMatch);
 
-        if (maxMatch == [game.chosenCards count] && [game.chosenCards count] >2) {
-            game.roundScore += ALL_SUITS_MATCH_BONUS + maxMatch * SUIT_MATCH_PTS;
-            game.roundResult = ALL_SUITS_MATCH;
-            NSLog(@"All suits matched! +%ld", (long)game.roundScore);
-            
-        } else if (maxMatch == [game.chosenCards count] && [game.chosenCards count] == 2) {
-                /* 2-card game is easier. Score differently. */
+        if (maxMatch == [game.chosenCards count]) {
                 game.roundScore = maxMatch * SUIT_MATCH_PTS;
-                game.roundResult = ALL_SUITS_MATCH;
+                game.roundResult = SUITS_MATCH;
                 NSLog(@"Suits matched! +%ld", (long)game.roundScore);
 
-        } else if (maxMatch > 1) {
-            game.roundScore = maxMatch * SUIT_MATCH_PTS;
-            game.roundResult = SOME_SUITS_MATCH;
-            NSLog(@"Match! +%ld", (long)game.roundScore);
         } else {
             //if no rank OR suit,
             game.roundScore -= MISMATCH_PENALTY;

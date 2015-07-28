@@ -17,6 +17,7 @@
     self = [super initWithCardCount:count usingDeck:deck];
     if (self) {
         self.roundResult = UNDEFINED;
+        self.numMatch = 3;
     }
     
     return self;

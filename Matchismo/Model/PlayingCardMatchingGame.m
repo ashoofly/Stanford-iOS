@@ -15,6 +15,7 @@
     self = [super initWithCardCount:count usingDeck:deck];
     if (self) {
         self.roundResult = TBD;
+        self.numMatch = 2;
     }
     
     return self;

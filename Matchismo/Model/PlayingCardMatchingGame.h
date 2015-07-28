@@ -11,10 +11,8 @@
 @interface PlayingCardMatchingGame : CardMatchingGame
 
 typedef NS_ENUM(NSInteger, RoundResult) {
-    ALL_RANKS_MATCH,
-    ALL_SUITS_MATCH,
-    SOME_RANKS_MATCH,
-    SOME_SUITS_MATCH,
+    RANKS_MATCH,
+    SUITS_MATCH,
     NO_MATCH,
     TBD
 };
